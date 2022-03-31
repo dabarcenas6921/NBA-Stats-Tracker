@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/NBA-API-Project.iml" filepath="$PROJECT_DIR$/.idea/NBA-API-Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../airQualityIndexProject/.idea/airQualityIndexProject.iml" filepath="$PROJECT_DIR$/../airQualityIndexProject/.idea/airQualityIndexProject.iml" />
     </modules>
   </component>
 </project>
