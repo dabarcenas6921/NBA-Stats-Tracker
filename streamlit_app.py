@@ -20,6 +20,10 @@ if option == 'Player stats':
     else:
         st.write(player_dict)
 
+# PROTOTYPE DATAFRAME(below): use dataframe to show several statistics for players
+# df = pd.DataFrame([player_searched, player_dict])
+# st.map(df)
+
 
 
 
