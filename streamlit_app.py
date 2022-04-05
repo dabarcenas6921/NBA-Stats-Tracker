@@ -34,6 +34,7 @@ if add_selectbox == 'Player Stats':
     else:
         st.success('Player found')
         player_info = player_dict["data"][0]
+        metric_con = st.checkbox("Convert to Metric System.")
         st.write(player_info)
         st.write('Name: ',player_info["first_name"] + " " + player_info["last_name"])
         if player_info["position"] == "":
@@ -43,10 +44,18 @@ if add_selectbox == 'Player Stats':
 
         if player_info["height_feet"] is None:
             st.write('Height: N/A')
+        elif metric_con:
+            height_inches = (player_info["height_feet"]*12) + player_info["height_inches"]
+            height_cm = float(height_inches) * 2.54
+            st.write("Height : ", height_cm, "cm")
         else:
             st.write("Height : {0}' {1}''".format(player_info["height_feet"], player_info["height_inches"]))
         st.write('Team: ',player_info["team"]["full_name"])
-        st.write("Weight: ", player_info["weight_pounds"], "lbs")
+        if metric_con:
+            weight_kg = "{:.2f}".format(float(player_info["weight_pounds"]) / 2.205)
+            st.write("Weight: ", weight_kg, "kg")
+        else:
+            st.write("Weight: ", player_info["weight_pounds"], "lbs")
 
 # PROTOTYPE DATAFRAME(below): use dataframe to show several statistics for players
     #df = pd.DataFrame([player_searched, player_dict])
