@@ -8,7 +8,7 @@
 - [x] 3. At least 1 map with points marked on it (a simple map can be created using https://docs.streamlit.io/library/api-reference/charts/st.map (Links to an external site.) or a more complex 3d map at https://docs.streamlit.io/library/api-reference/charts/st.pydeck_chart (Links to an external site.))
 - [ ] 4. At least 1 button widget (https://docs.streamlit.io/library/api-reference/widgets/st.button)
 - [ ] 5. At least 1 checkbox widget (https://docs.streamlit.io/library/api-reference/widgets/st.checkbox)
-- [ ] 6. At least 2 of the essential feedback and messages boxes to the users:
+- [x] 6. At least 2 of the essential feedback and messages boxes to the users:
   - [ ] Success box - https://docs.streamlit.io/library/api-reference/status/st.success (Links to an external site.) 
   - [x] Information box - https://docs.streamlit.io/library/api-reference/status/st.info (Links to an external site.) 
   - [x] Warning box - https://docs.streamlit.io/library/api-reference/status/st.warning (Links to an external site.) 
@@ -20,7 +20,7 @@
   - [ ] Multiselect - https://docs.streamlit.io/library/api-reference/widgets/st.multiselect (Links to an external site.) 
   - [ ] Slider - https://docs.streamlit.io/library/api-reference/widgets/st.slider (Links to an external site.) 
   - [ ] Select-slider - https://docs.streamlit.io/library/api-reference/widgets/st.select_slider (Links to an external site.) 
-  - [ ] Text input - https://docs.streamlit.io/library/api-reference/widgets/st.text_input (Links to an external site.) 
+  - [x] Text input - https://docs.streamlit.io/library/api-reference/widgets/st.text_input (Links to an external site.) 
   - [ ] Number input - https://docs.streamlit.io/library/api-reference/widgets/st.number_input (Links to an external site.) 
   - [ ] Text-area - https://docs.streamlit.io/library/api-reference/widgets/st.text_area (Links to an external site.) 
   - [ ] Date input - https://docs.streamlit.io/library/api-reference/widgets/st.date_input (Links to an external site.) 
