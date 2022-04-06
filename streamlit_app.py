@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import requests
+from nba_api.stats.static import players
 
 st.set_page_config(
     page_title="NBA Tracker App",
@@ -12,7 +13,7 @@ st.set_page_config(
 
 st.title("NBA Stats Tracker 🏀")
 
-st.write("API used: [https://www.balldontlie.io](https://www.balldontlie.io)")
+st.write("APIs used: [https://www.balldontlie.io](https://www.balldontlie.io) and [https://github.com/swar/nba_api](https://github.com/swar/nba_api)")
 # df = pd.DataFrame(
 #    np.random.randn(10, 5),
 #    columns=('col %d' % i for i in range(5)))
@@ -37,45 +38,56 @@ if add_selectbox == 'Player Stats':
 
     player_dict = requests.get(player_url).json()
 
-    # If player name not found
-    if not player_dict["data"]:
-        st.error("Player does not exist!")
-    else:
-        st.success('Player found')
-        player_info = player_dict["data"][0]
-        metric_con = st.checkbox("Convert to Metric System.")
-        # st.write(player_info)
-
-        # Player's full name
-        st.write('Name: ', player_info["first_name"] + " " + player_info["last_name"])
-
-        # Player's position
-        if player_info["position"] == "":
-            st.write("Position: Retired/Inactive")
+    if player_searched:
+        # If player name not found
+        if not player_dict["data"]:
+            st.error("Player does not exist!")
         else:
-            st.write('Position:', player_info["position"])
+            st.success('Player found')
+            player_info = player_dict["data"][0]
+            metric_con = st.checkbox("Convert to Metric System.")
+            # st.write(player_info)
 
-        # Player's height
-        if player_info["height_feet"] is None:
-            st.write('Height: N/A')
-        elif metric_con:
-            height_inches = (player_info["height_feet"] * 12) + player_info["height_inches"]
-            height_cm = float(height_inches) * 2.54
-            st.write("Height : ", height_cm, "cm")
-        else:
-            st.write("Height : {0}' {1}''".format(player_info["height_feet"], player_info["height_inches"]))
+            #creating columns to split the info:
+            col1, col2 = st.columns(2)
 
-        # Player's team
-        st.write('Team: ', player_info["team"]["full_name"])
+            with col1:
+                # Player's full name
+                st.write('Name: ', player_info["first_name"] + " " + player_info["last_name"])
 
-        # Player's weight
-        if player_info["weight_pounds"] is None:
-            st.write('Weight: N/A')
-        elif metric_con:
-            weight_kg = "{:.2f}".format(float(player_info["weight_pounds"]) / 2.205)
-            st.write("Weight: ", weight_kg, "kg")
-        else:
-            st.write("Weight: ", str(player_info["weight_pounds"]), "lbs")
+                # Player's position
+                if player_info["position"] == "":
+                    st.write("Position: Retired/Inactive")
+                else:
+                    st.write('Position:', player_info["position"])
+
+                # Player's height
+                if player_info["height_feet"] is None:
+                    st.write('Height: N/A')
+                elif metric_con:
+                    height_inches = (player_info["height_feet"] * 12) + player_info["height_inches"]
+                    height_cm = float(height_inches) * 2.54
+                    st.write("Height : ", height_cm, "cm")
+                else:
+                    st.write("Height : {0}' {1}''".format(player_info["height_feet"], player_info["height_inches"]))
+
+                # Player's team
+                st.write('Team: ', player_info["team"]["full_name"])
+
+                # Player's weight
+                if player_info["weight_pounds"] is None:
+                    st.write('Weight: N/A')
+                elif metric_con:
+                    weight_kg = "{:.2f}".format(float(player_info["weight_pounds"]) / 2.205)
+                    st.write("Weight: ", weight_kg, "kg")
+                else:
+                    st.write("Weight: ", str(player_info["weight_pounds"]), "lbs")
+
+            with col2:
+                player_searched_id = players.find_players_by_full_name(player_searched)[0]["id"]
+                player_image = "https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{0}.png".format(player_searched_id)
+                st.image(player_image, caption="Player headshot")
+
 
 # PROTOTYPE DATAFRAME(below): use dataframe to show several statistics for players
 # df = pd.DataFrame([player_searched, player_dict])
