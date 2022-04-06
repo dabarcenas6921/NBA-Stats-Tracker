@@ -168,39 +168,78 @@ elif add_selectbox == 'Team Stats':
                     # st.write(new["data"][0])
 elif add_selectbox == 'Stadium Locations':
     st.subheader("NBA Stadium Locations")
-    st.write("A map displaying the stadium Locations for all 30 NBA teams.")
-    map_data = pd.DataFrame(
-        np.array([
-            [33.7573, -84.3963],  # Atlanta Hawks - State Farm Arena
-            [42.3662, -71.0621],  # Boston Celtics - TD Garden
-            [40.6826, -73.9754],  # Brooklyn Nets - Barclays Center
-            [35.2251, -80.8392],  # Charlotte Hornets - Spectrum Center
-            [41.8807, -87.6742],  # Chicago Bulls - United Center
-            [41.4967, -81.6885],  # Cleveland Cavaliers - Rocket Mortgage FieldHouse
-            [32.7905, -96.8103],  # Dallas Mavericks - American Airlines Center
-            [39.7486, -105.0075],  # Denver Nuggets - Ball Arena
-            [42.3409, -83.0552],  # Detroit Pistons - Little Caesars Arena
-            [37.7679, -122.3874],  # Golden State Warriors - Chase Center
-            [29.7507, -95.3622],  # Houston Rockets - Toyota Center
-            [39.7641, -86.1555],  # Indiana Pacers - Gainbridge Fieldhouse
-            [34.043, -118.2668],  # LA Clippers - Crypto.com Arena
-            [34.043, -118.2668],  # Los Angeles lakers - Crypto.com Arena
-            [35.1382, -90.0507],  # Memphis Grizzlies - FedExForum
-            [25.78136, -80.18794],  # Miami Heat - America Airlines
-            [43.0451, -87.9172],  # Milwaukee Bucks - Fiserv Forum
-            [44.9795, -93.2761],  # Minnesota Timberwolves - Target Center
-            [29.9490, -90.0821],  # New Orleans Pelicans - Smoothie King Center
-            [40.7505, -73.9934],  # New York Knicks - Madison Square Garden
-            [35.4634, -97.5151],  # Oklahoma City Thunder - Paycom Center
-            [28.5392, -81.3839],  # Orlando Magic - Amway Center
-            [39.9012, -75.1720],  # Philadelphia 76ers - Wells Fargo Center
-            [33.4457, -112.0712],  # Phoenix Suns - Footprint Center
-            [45.5316, -122.6668],  # Portland Trail Blazers - Moda Center
-            [38.5802, -121.4997],  # Sacramento Kings - Golden 1 Center
-            [29.4270, -98.4375],  # San Antonio Spurs - AT&T Center
-            [43.6435, -79.3791],  # Toronto Raptors - Scotiabank Arena
-            [40.7683, -111.9011],  # Utah Jazz - Vivint Arena
-            [38.8982, -77.0209]  # Washington Wizards - Capital One Arena
-        ]),
-        columns=['lat', 'lon'])
-    st.map(map_data, zoom=3)
+
+    col1, col2 = st.columns(2)
+
+    # Populating each column
+    with col1:
+        # creating a dataframe for the geological periods
+        geological_periods = pd.DataFrame(
+            {
+                "Team Name": ["Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets",
+                              "Chicago Bulls", "Cleveland Cavaliers", "Dallas Mavericks", "Denver Nuggets",
+                              "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers",
+                              "LA Clippers", "Los Angeles Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks",
+                              "Minnesota Timberwolves", "New Orleans Pelicans", "New York Knicks", "Oklahoma City Thunder",
+                              "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns", "Portland Trail Blazers",
+                              "Sacramento Kings", "San Antonio Spurs" ,"Toronto Raptors", "Utah Jazz", "Washington Wizards"],
+
+                "Arena Name": ["State Farm Arena", "TD Garden", "Barclays Center", "Spectrum Center", "United Center",
+                               "Rocket Mortgage FieldHouse", "American Airlines Center", "Ball Arena", "Little Caesars Arena",
+                               "Chase Center", "Toyota Center", "Gainbridge Fieldhouse", "Crypto.com Arena", "Crypto.com Arena",
+                               "FedExForum", "America Airlines", "Fiserv Forum", "Target Center", "Smoothie King Center",
+                               "Madison Square Garden", "Paycom Center", "Amway Center", "Wells Fargo Center",
+                               "Footprint Center", "Moda Center", "Golden 1 Center", "AT&T Center","Scotiabank Arena",
+                               "Vivint Arena", "Capital One Arena"],
+
+                "Arena Location": ["Atlanta, Georgia", "Boston, Massachusetts", "Brooklyn, New York",
+                                   "Charlotte, North Carolina", "Chicago, Illinois", "Cleveland, Ohio", "Dallas, Texas",
+                                   "Denver, Colorado", "Detroit, Michigan", "San Francisco, California", "Houston, Texas",
+                                   "Indianapolis, Indiana", "Los Angeles, California", "Los Angeles, California",
+                                   "Memphis, Tennessee","Miami, Florida", "Milwaukee, Wisconsin",
+                                   "Minneapolis, Minnesota", "New Orleans, Louisiana", "New York City, New York",
+                                   "Oklahoma City, Oklahoma","Orlando, Florida", "Philadelphia, Pennsylvania",
+                                   "Phoenix, Arizona","Portland, Oregon", "Sacramento, California", "San Antonio, Texas",
+                                   "Toronto, Ontario", "Salt Lake City, Utah", "Washington, D.C."]
+            }
+        )
+        # Displaying the dataframe
+        st.dataframe(geological_periods)
+
+    with col2:
+        map_data = pd.DataFrame(
+            np.array([
+                [33.7573, -84.3963],  # Atlanta Hawks - State Farm Arena
+                [42.3662, -71.0621],  # Boston Celtics - TD Garden
+                [40.6826, -73.9754],  # Brooklyn Nets - Barclays Center
+                [35.2251, -80.8392],  # Charlotte Hornets - Spectrum Center
+                [41.8807, -87.6742],  # Chicago Bulls - United Center
+                [41.4967, -81.6885],  # Cleveland Cavaliers - Rocket Mortgage FieldHouse
+                [32.7905, -96.8103],  # Dallas Mavericks - American Airlines Center
+                [39.7486, -105.0075],  # Denver Nuggets - Ball Arena
+                [42.3409, -83.0552],  # Detroit Pistons - Little Caesars Arena
+                [37.7679, -122.3874],  # Golden State Warriors - Chase Center
+                [29.7507, -95.3622],  # Houston Rockets - Toyota Center
+                [39.7641, -86.1555],  # Indiana Pacers - Gainbridge Fieldhouse
+                [34.043, -118.2668],  # LA Clippers - Crypto.com Arena
+                [34.043, -118.2668],  # Los Angeles lakers - Crypto.com Arena
+                [35.1382, -90.0507],  # Memphis Grizzlies - FedExForum
+                [25.78136, -80.18794],  # Miami Heat - America Airlines
+                [43.0451, -87.9172],  # Milwaukee Bucks - Fiserv Forum
+                [44.9795, -93.2761],  # Minnesota Timberwolves - Target Center
+                [29.9490, -90.0821],  # New Orleans Pelicans - Smoothie King Center
+                [40.7505, -73.9934],  # New York Knicks - Madison Square Garden
+                [35.4634, -97.5151],  # Oklahoma City Thunder - Paycom Center
+                [28.5392, -81.3839],  # Orlando Magic - Amway Center
+                [39.9012, -75.1720],  # Philadelphia 76ers - Wells Fargo Center
+                [33.4457, -112.0712],  # Phoenix Suns - Footprint Center
+                [45.5316, -122.6668],  # Portland Trail Blazers - Moda Center
+                [38.5802, -121.4997],  # Sacramento Kings - Golden 1 Center
+                [29.4270, -98.4375],  # San Antonio Spurs - AT&T Center
+                [43.6435, -79.3791],  # Toronto Raptors - Scotiabank Arena
+                [40.7683, -111.9011],  # Utah Jazz - Vivint Arena
+                [38.8982, -77.0209]  # Washington Wizards - Capital One Arena
+            ]),
+            columns=['lat', 'lon'])
+        st.map(map_data, zoom=3)
+        st.caption("A map displaying the stadium Locations for all 30 NBA teams.")
