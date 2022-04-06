@@ -52,7 +52,9 @@ if add_selectbox == 'Player Stats':
         else:
             st.write("Height : {0}' {1}''".format(player_info["height_feet"], player_info["height_inches"]))
         st.write('Team: ',player_info["team"]["full_name"])
-        if metric_con:
+        if player_info["weight_pounds"] is None:
+            st.write('Weight: N/A')
+        elif metric_con:
             weight_kg = "{:.2f}".format(float(player_info["weight_pounds"]) / 2.205)
             st.write("Weight: ", weight_kg, "kg")
         else:
