@@ -84,7 +84,7 @@ if add_selectbox == 'Player Stats':
                     st.write("Weight: ", str(player_info["weight_pounds"]), "lbs")
 
             with col2:
-                player_searched_id = players.find_players_by_full_name(player_searched)[0]["id"]
+                player_searched_id = players.find_players_by_full_name(player_info["first_name"] + " " + player_info["last_name"])[0]["id"]
                 player_image = "https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{0}.png".format(player_searched_id)
                 st.image(player_image, caption="Player headshot")
 
