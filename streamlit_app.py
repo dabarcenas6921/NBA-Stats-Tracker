@@ -11,12 +11,13 @@ st.set_page_config(
 )
 
 st.title("NBA Stats Tracker 🏀")
-df = pd.DataFrame(
-    np.random.randn(10, 5),
-    columns=('col %d' % i for i in range(5)))
+
+#df = pd.DataFrame(
+#    np.random.randn(10, 5),
+#    columns=('col %d' % i for i in range(5)))
 
 
-st.table(df)
+#st.table(df)
 st.sidebar.header("Options")
 
 add_selectbox = st.sidebar.selectbox(
@@ -137,11 +138,40 @@ elif add_selectbox == 'Team Stats':
                     st.write(new["data"])
                     #st.write(new["data"][0])
 elif add_selectbox == 'Stadium Locations':
-    # idea -
+    st.subheader("NBA Stadium Locations")
+    st.write("A map displaying the stadium Locations for all 30 NBA teams.")
     map_data = pd.DataFrame(
         np.array([
-            [25.775496898, -80.186],
+            [33.7573, -84.3963],  # Atlanta Hawks - State Farm Arena
+            [42.3662, -71.0621],  # Boston Celtics - TD Garden
+            [40.6826, -73.9754],  # Brooklyn Nets - Barclays Center
+            [35.2251, -80.8392],  # Charlotte Hornets - Spectrum Center
+            [41.8807, -87.6742],  # Chicago Bulls - United Center
+            [41.4967, -81.6885], # Cleveland Cavaliers - Rocket Mortgage FieldHouse
+            [32.7905, -96.8103], # Dallas Mavericks - American Airlines Center
+            [39.7486, -105.0075], # Denver Nuggets - Ball Arena
+            [42.3409, -83.0552], # Detroit Pistons - Little Caesars Arena
+            [37.7679, -122.3874], # Golden State Warriors - Chase Center
+            [29.7507, -95.3622], # Houston Rockets - Toyota Center
+            [39.7641, -86.1555], # Indiana Pacers - Gainbridge Fieldhouse
+            [34.043, -118.2668], # LA Clippers - Crypto.com Arena
+            [34.043, -118.2668], # Los Angeles lakers - Crypto.com Arena
+            [35.1382, -90.0507], # Memphis Grizzlies - FedExForum
+            [25.78136, -80.18794], # Miami Heat - America Airlines
+            [43.0451, -87.9172], # Milwaukee Bucks - Fiserv Forum
+            [44.9795, -93.2761], # Minnesota Timberwolves - Target Center
+            [29.9490, -90.0821], # New Orleans Pelicans - Smoothie King Center
+            [40.7505, -73.9934], # New York Knicks - Madison Square Garden
+            [35.4634, -97.5151], # Oklahoma City Thunder - Paycom Center
+            [28.5392, -81.3839], # Orlando Magic - Amway Center
+            [39.9012, -75.1720], # Philadelphia 76ers - Wells Fargo Center
+            [33.4457, -112.0712], # Phoenix Suns - Footprint Center
+            [45.5316, -122.6668], # Portland Trail Blazers - Moda Center
+            [38.5802, -121.4997], # Sacramento Kings - Golden 1 Center
+            [29.4270, -98.4375], # San Antonio Spurs - AT&T Center
+            [43.6435, -79.3791], # Toronto Raptors - Scotiabank Arena
+            [40.7683, -111.9011], # Utah Jazz - Vivint Arena
+            [38.8982, -77.0209] # Washington Wizards - Capital One Arena
             ]),
         columns=['lat', 'lon'])
-    st.map(map_data)
-
+    st.map(map_data, zoom = 3)
