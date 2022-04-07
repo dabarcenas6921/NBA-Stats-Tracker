@@ -171,7 +171,7 @@ elif add_selectbox == 'Team Stats':
             if season:
                 st.subheader("Season {0} stats for {1}".format(season, team_selected))
 
-                games = "https://www.balldontlie.io/api/v1/games?seasons[]={0}&team_ids[]={1}".format(season, team_id)
+                games = "https://www.balldontlie.io/api/v1/games?seasons[]={0}&team_ids[]={1}&per_page=100".format(season, team_id)
                 new = requests.get(games).json()
 
 
@@ -198,8 +198,15 @@ elif add_selectbox == 'Team Stats':
                         elif new["data"][i]["visitor_team"]["id"] == team_id:
                             other_team_scores.append(new["data"][i]["home_team_score"])
 
-                    st.write("Team Scores", team_scores)
-                    st.write("Other team's scores", other_team_scores)
+                    team_scores_table = pd.DataFrame(
+                        {
+                            team_selected + "'s Score:": team_scores,
+                            "Opposing Team's Scores": other_team_scores
+                        }
+                    )
+
+                    st.dataframe(team_scores_table, height=500)
+                    st.line_chart(team_scores_table, height=500)
 
 elif add_selectbox == 'Stadium Locations':
     st.subheader("NBA Stadium Locations")
