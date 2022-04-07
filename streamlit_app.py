@@ -275,11 +275,3 @@ elif add_selectbox == 'Stadium Locations':
             columns=['lat', 'lon'])
         st.map(map_data)
         st.caption("A map displaying the stadium Locations for all 30 NBA teams.")
-
-st.write("APIs used: [https://www.balldontlie.io](https://www.balldontlie.io) and [https://github.com/swar/nba_api](https://github.com/swar/nba_api)")
-# df = pd.DataFrame(
-#    np.random.randn(10, 5),
-#    columns=('col %d' % i for i in range(5)))
-
-
-# st.table(df)
