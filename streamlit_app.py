@@ -204,7 +204,7 @@ elif add_selectbox == 'Stadium Locations':
             }
         )
         # Displaying the dataframe
-        st.dataframe(geological_periods)
+        st.dataframe(geological_periods, height= 500)
 
     with col2:
         map_data = pd.DataFrame(
