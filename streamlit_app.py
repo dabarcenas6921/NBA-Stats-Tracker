@@ -86,11 +86,11 @@ if add_selectbox == 'Player Stats':
                     st.write("Weight: ", str(player_info["weight_pounds"]), "lbs")
 
                 #Player's headline stats
-                    # getting player headline stats such as ppg, rpg, and apg through nba_api
-                    selected_player_headline_dict = commonplayerinfo.CommonPlayerInfo(player_id=player_searched_id).player_headline_stats.get_dict()
-                    st.write("PPG: " + str(selected_player_headline_dict["data"][0][3]))
-                    st.write("RPG: " + str(selected_player_headline_dict["data"][0][4]))
-                    st.write("APG: " + str(selected_player_headline_dict["data"][0][5]))
+                # getting player headline stats such as ppg, rpg, and apg through nba_api
+                selected_player_headline_dict = commonplayerinfo.CommonPlayerInfo(player_id=player_searched_id).player_headline_stats.get_dict()
+                st.write("PPG: " + str(selected_player_headline_dict["data"][0][3]))
+                st.write("RPG: " + str(selected_player_headline_dict["data"][0][4]))
+                st.write("APG: " + str(selected_player_headline_dict["data"][0][5]))
 
             with col2:
                 #using nba_api to get right player id and then the player headshot image
