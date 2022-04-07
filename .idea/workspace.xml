@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="51b0f906-1b3b-4bea-9616-a600fbde7fe2" name="Changes" comment="added player headshots, connected to another api (nba_api)" />
+=======
+    <list default="true" id="afbc11f3-59db-4f99-8407-b8003c042e7d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/streamlit_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/streamlit_app.py" afterDir="false" />
+    </list>
+>>>>>>> 5399e81f0c6d729d68f0a2ae87b5938add572c63
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,10 +17,66 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+<<<<<<< HEAD
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="TaskManager">
     <servers />
   </component>
+=======
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="27PR56HM9UjNLzJoUkGcnY0SF0n" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../learningStreamlitFramework" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="afbc11f3-59db-4f99-8407-b8003c042e7d" name="Changes" comment="" />
+      <created>1649219548141</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1649219548141</updated>
+      <workItem from="1649219549257" duration="2212000" />
+      <workItem from="1649255162908" duration="6552000" />
+      <workItem from="1649267960260" duration="4822000" />
+    </task>
+    <task id="LOCAL-00001" summary="Added map with all stadium locations.">
+      <created>1649219615757</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1649219615757</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added/Edited text. Added st.warning()">
+      <created>1649267878549</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1649267878549</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added table with map information">
+      <created>1649286799071</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1649286799071</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+>>>>>>> 5399e81f0c6d729d68f0a2ae87b5938add572c63
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -25,4 +88,13 @@
       </map>
     </option>
   </component>
+<<<<<<< HEAD
+=======
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added map with all stadium locations." />
+    <MESSAGE value="Added/Edited text. Added st.warning()" />
+    <MESSAGE value="Added table with map information" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added table with map information" />
+  </component>
+>>>>>>> 5399e81f0c6d729d68f0a2ae87b5938add572c63
 </project>
