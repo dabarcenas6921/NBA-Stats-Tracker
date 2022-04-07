@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import requests
 from nba_api.stats.static import players
+from nba_api.stats.endpoints import commonplayerinfo
 
 st.set_page_config(
     page_title="NBA Tracker App",
@@ -45,6 +46,7 @@ if add_selectbox == 'Player Stats':
         else:
             st.success('Player found')
             player_info = player_dict["data"][0]
+            player_searched_id = players.find_players_by_full_name(player_info["first_name"] + " " + player_info["last_name"])[0]["id"]
             metric_con = st.checkbox("Convert to Metric System.")
             # st.write(player_info)
 
@@ -53,7 +55,7 @@ if add_selectbox == 'Player Stats':
 
             with col1:
                 # Player's full name
-                st.write('Name: ', player_info["first_name"] + " " + player_info["last_name"])
+                st.subheader(player_info["first_name"] + " " + player_info["last_name"])
 
                 # Player's position
                 if player_info["position"] == "":
@@ -67,7 +69,7 @@ if add_selectbox == 'Player Stats':
                 elif metric_con:
                     height_inches = (player_info["height_feet"] * 12) + player_info["height_inches"]
                     height_cm = float(height_inches) * 2.54
-                    st.write("Height : ", height_cm, "cm")
+                    st.write("Height : ", str(height_cm), "cm")
                 else:
                     st.write("Height : {0}' {1}''".format(player_info["height_feet"], player_info["height_inches"]))
 
@@ -79,12 +81,19 @@ if add_selectbox == 'Player Stats':
                     st.write('Weight: N/A')
                 elif metric_con:
                     weight_kg = "{:.2f}".format(float(player_info["weight_pounds"]) / 2.205)
-                    st.write("Weight: ", weight_kg, "kg")
+                    st.write("Weight: ", str(weight_kg), "kg")
                 else:
                     st.write("Weight: ", str(player_info["weight_pounds"]), "lbs")
 
+                #Player's headline stats
+                    # getting player headline stats such as ppg, rpg, and apg through nba_api
+                    selected_player_headline_dict = commonplayerinfo.CommonPlayerInfo(player_id=player_searched_id).player_headline_stats.get_dict()
+                    st.write("PPG: " + str(selected_player_headline_dict["data"][0][3]))
+                    st.write("RPG: " + str(selected_player_headline_dict["data"][0][4]))
+                    st.write("APG: " + str(selected_player_headline_dict["data"][0][5]))
+
             with col2:
-                player_searched_id = players.find_players_by_full_name(player_info["first_name"] + " " + player_info["last_name"])[0]["id"]
+                #using nba_api to get right player id and then the player headshot image
                 player_image = "https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{0}.png".format(player_searched_id)
                 st.image(player_image, caption="Player headshot")
 
