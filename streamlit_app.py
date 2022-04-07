@@ -174,23 +174,33 @@ elif add_selectbox == 'Team Stats':
                 games = "https://www.balldontlie.io/api/v1/games?seasons[]={0}&team_ids[]={1}".format(season, team_id)
                 new = requests.get(games).json()
 
+
                 if not 'data' in new or len(new['data']) == 0:
                     st.info("N/A")
                 else:
                     # st.write(new["data"])
 
-                    # All the home team's scores
-                    home_team_scores = []
-                    # All the visitor team's scores
-                    visitor_team_scores = []
+                    # All the searched team's scores
+                    team_scores = []
+
+                    other_team_scores = []
 
                     # Get the scores for both teams
-                    for i in new["data"]:
-                        home_team_scores.append(i["home_team_score"])
-                        visitor_team_scores.append(i["visitor_team_score"])
+                    for i in range(len(new["data"])):
+                        if new["data"][i]["home_team"]["id"] == team_id:
+                            team_scores.append(new["data"][i]["home_team_score"])
+                        elif new["data"][i]["visitor_team"]["id"] == team_id:
+                            team_scores.append(new["data"][i]["visitor_team_score"])
 
-                    st.write("Home Team Scores", home_team_scores)
-                    st.write("Visitor Team Scores", visitor_team_scores)
+                    for i in range(len(new["data"])):
+                        if new["data"][i]["home_team"]["id"] == team_id:
+                            other_team_scores.append(new["data"][i]["visitor_team_score"])
+                        elif new["data"][i]["visitor_team"]["id"] == team_id:
+                            other_team_scores.append(new["data"][i]["home_team_score"])
+
+                    st.write("Team Scores", team_scores)
+                    st.write("Other team's scores", other_team_scores)
+
 elif add_selectbox == 'Stadium Locations':
     st.subheader("NBA Stadium Locations")
 
