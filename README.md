@@ -2,7 +2,7 @@
 
 - [x] 1. At least 1 interactive table (https://docs.streamlit.io/library/api-reference/data/st.dataframe (Links to an external site.))
 - [ ] 2. At least 2 chart elements,  such as line, area or bar charts (matplotlib is allowed). To display:
-  - [ ] a line chart - https://docs.streamlit.io/library/api-reference/charts/st.line_chart (Links to an external site.)
+  - [x] a line chart - https://docs.streamlit.io/library/api-reference/charts/st.line_chart (Links to an external site.)
   - [ ] an area chart - https://docs.streamlit.io/library/api-reference/charts/st.area_chart (Links to an external site.)
   - [ ] a bar chart - https://docs.streamlit.io/library/api-reference/charts/st.bar_chart (Links to an external site.)
 - [x] 3. At least 1 map with points marked on it (a simple map can be created using https://docs.streamlit.io/library/api-reference/charts/st.map (Links to an external site.) or a more complex 3d map at https://docs.streamlit.io/library/api-reference/charts/st.pydeck_chart (Links to an external site.))
