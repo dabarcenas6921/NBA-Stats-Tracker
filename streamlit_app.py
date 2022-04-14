@@ -144,7 +144,7 @@ elif add_selectbox == 'Team Stats':
 
             # Find the ID of the team the user selected
             if new["full_name"] == team_selected:
-                st.write("Team ID: ", new["id"])
+                st.write("Team ID: ", str(new["id"]))
                 st.write("Abbreviation: ", new["abbreviation"])
                 st.write("City: ", new["city"])
                 st.write("Conference: ", new["conference"])
@@ -160,7 +160,7 @@ elif add_selectbox == 'Team Stats':
 
             # season = 2018
 
-            season = st.text_input('Input a year')
+            season = st.number_input('Input a year', step=1, min_value=1979, max_value=2021, value=2021)
 
             # df = pd.DataFrame(
             #    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
