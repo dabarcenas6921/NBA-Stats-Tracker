@@ -26,7 +26,7 @@ st.sidebar.header("Options")
 
 add_selectbox = st.sidebar.selectbox(
     "Select a Project",
-    ['Player Stats', 'Team Stats', 'Season Stats', 'Stadium Locations']
+    ['Player Stats', 'Team Stats', 'Stadium Locations']
 )
 
 if add_selectbox == 'Player Stats':
@@ -205,8 +205,30 @@ elif add_selectbox == 'Team Stats':
                         }
                     )
 
+                    team_scores_table_NO_OPPOSING = pd.DataFrame(
+                        {
+                            team_selected + "'s Score:": team_scores
+                        }
+                    )
+
+                    team_scores_table_ONLY_OPPOSING = pd.DataFrame(
+                        {
+                            "Opposing Team's Scores": other_team_scores
+                        }
+                    )
+
                     st.dataframe(team_scores_table, height=500)
-                    st.line_chart(team_scores_table, height=500)
+
+                    option = st.radio("Please select what line chart information you would like to see:",
+                                            [team_selected + "'s Scores", "Opposing Team's Scores",
+                                             "Scores for both teams"])
+                    if option == "Opposing Team's Scores":
+                        st.line_chart(team_scores_table_ONLY_OPPOSING, height=500)
+                    elif option == "Scores for both teams":
+                        st.line_chart(team_scores_table, height=500)
+                    else:
+                        st.line_chart(team_scores_table_NO_OPPOSING, height=500)
+
 
 elif add_selectbox == 'Stadium Locations':
     st.subheader("NBA Stadium Locations")
