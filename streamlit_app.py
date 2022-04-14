@@ -101,8 +101,6 @@ if add_selectbox == 'Player Stats':
                     player_searched_id)
                 st.image(player_image, caption="Player headshot")
 
-            #player_selected_2_button = st.button('Compare Player?')
-
             player_searched2 = st.text_input('If you want to compare, search for second player by their name.')
             player_url_2 = "https://www.balldontlie.io/api/v1/players?search={0}".format(player_searched2)
             player_dict2 = requests.get(player_url_2).json()
@@ -170,31 +168,34 @@ if add_selectbox == 'Player Stats':
                             player_searched_id2)
                         st.image(player_image2, caption="Player headshot")
 
-                    player1 = player_info["first_name"] + " " + player_info["last_name"]
-                    player2 = player_info2["first_name"] + " " + player_info2["last_name"]
-                    player1_stats = [PPG,RPG,APG]
-                    player2_stats = [PPG2,RPG2,APG2]
-                    compare_players = pd.DataFrame({
-                            "Point Categories": ['PPG', 'RPG', 'APG'],
-                            player1: player1_stats,
-                            player2: player2_stats
-                    })
+                    compare_button = st.button('Bar Chart?')
+
+                    if compare_button:
+                        player1 = player_info["first_name"] + " " + player_info["last_name"]
+                        player2 = player_info2["first_name"] + " " + player_info2["last_name"]
+                        player1_stats = [PPG,RPG,APG]
+                        player2_stats = [PPG2,RPG2,APG2]
+                        compare_players = pd.DataFrame({
+                                "Point Categories": ['PPG', 'RPG', 'APG'],
+                                player1: player1_stats,
+                                player2: player2_stats
+                        })
 
 
-                    altair_chart_players = alt.Chart(compare_players)\
-                        .transform_fold([player1, player2], as_=["key", "value"])\
-                        .mark_bar()\
-                        .encode(
-                                alt.X("key:N", axis=None),
-                                alt.Y("value:Q"),
-                                alt.Color("key:N", legend=alt.Legend(title=None, orient='bottom')),
-                                alt.Column("Point Categories",
-                                           sort=['PPG', 'RPG' 'APG'],
-                                           header=alt.Header(labelOrient="top", title=None)
+                        altair_chart_players = alt.Chart(compare_players)\
+                            .transform_fold([player1, player2], as_=["key", "value"])\
+                            .mark_bar()\
+                            .encode(
+                                    alt.X("key:N", axis=None),
+                                    alt.Y("value:Q"),
+                                    alt.Color("key:N", legend=alt.Legend(title=None, orient='bottom')),
+                                    alt.Column("Point Categories",
+                                               sort=['PPG', 'RPG' 'APG'],
+                                               header=alt.Header(labelOrient="top", title=None)
+                                    )
                                 )
-                            )
 
-                    st.altair_chart(altair_chart_players)
+                        st.altair_chart(altair_chart_players)
 
 elif add_selectbox == 'Team Stats':
     team_url = "https://www.balldontlie.io/api/v1/teams"
