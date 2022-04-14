@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import altair as alt
 import requests
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import commonplayerinfo
@@ -14,14 +15,10 @@ st.set_page_config(
 
 st.title("NBA Stats Tracker 🏀")
 
-st.write(
-    "APIs used: [https://www.balldontlie.io](https://www.balldontlie.io) and [https://github.com/swar/nba_api](https://github.com/swar/nba_api)")
-# df = pd.DataFrame(
-#    np.random.randn(10, 5),
-#    columns=('col %d' % i for i in range(5)))
+st.write("APIs used: [https://www.balldontlie.io]"
+         "(https://www.balldontlie.io) and [https://"
+         "github.com/swar/nba_api](https://github.com/swar/nba_api)")
 
-
-# st.table(df)
 st.sidebar.header("Options")
 
 add_selectbox = st.sidebar.selectbox(
@@ -91,9 +88,12 @@ if add_selectbox == 'Player Stats':
                 # getting player headline stats such as ppg, rpg, and apg through nba_api
                 selected_player_headline_dict = commonplayerinfo.CommonPlayerInfo(
                     player_id=player_searched_id).player_headline_stats.get_dict()
-                st.write("PPG: " + str(selected_player_headline_dict["data"][0][3]))
-                st.write("RPG: " + str(selected_player_headline_dict["data"][0][4]))
-                st.write("APG: " + str(selected_player_headline_dict["data"][0][5]))
+                PPG = selected_player_headline_dict["data"][0][3]
+                RPG = selected_player_headline_dict["data"][0][4]
+                APG = selected_player_headline_dict["data"][0][5]
+                st.write("PPG: " + str(PPG))
+                st.write("RPG: " + str(RPG))
+                st.write("APG: " + str(APG))
 
             with col2:
                 # using nba_api to get right player id and then the player headshot image
@@ -101,15 +101,106 @@ if add_selectbox == 'Player Stats':
                     player_searched_id)
                 st.image(player_image, caption="Player headshot")
 
+            player_searched2 = st.text_input('If you want to compare, search for second player by their name.')
+            player_url_2 = "https://www.balldontlie.io/api/v1/players?search={0}".format(player_searched2)
+            player_dict2 = requests.get(player_url_2).json()
+            if player_searched2:
+                # If player name not found
+                if not player_dict2["data"]:
+                    st.error("Player does not exist!")
+                else:
+                    st.success('Player found')
+                    player_info2 = player_dict2["data"][0]
+                    player_searched_id2 = \
+                        players.find_players_by_full_name(
+                            player_info2["first_name"] + " " + player_info2["last_name"])[0]["id"]
 
-# PROTOTYPE DATAFRAME(below): use dataframe to show several statistics for players
-# df = pd.DataFrame([player_searched, player_dict])
-# st.map(df)
+                    # creating columns to split the info:
+                    col1, col2 = st.columns(2)
+
+                    with col1:
+                        # Player's full name
+                        st.subheader(player_info2["first_name"] + " " + player_info2["last_name"])
+
+                        # Player's position
+                        if player_info2["position"] == "":
+                            st.write("Position: Retired/Inactive")
+                        else:
+                            st.write('Position:', player_info["position"])
+
+                        # Player's height
+                        if player_info2["height_feet"] is None:
+                            st.write('Height: N/A')
+                        elif metric_con:
+                            height_inches2 = (player_info2["height_feet"] * 12) + player_info2["height_inches"]
+                            height_cm2 = float(height_inches2) * 2.54
+                            st.write("Height : ", str(height_cm2), "cm")
+                        else:
+                            st.write("Height : {0}' {1}''".format(player_info2["height_feet"],
+                                                                  player_info2["height_inches"]))
+
+                        # Player's team
+                        st.write('Team: ', player_info2["team"]["full_name"])
+
+                        # Player's weight
+                        if player_info2["weight_pounds"] is None:
+                            st.write('Weight: N/A')
+                        elif metric_con:
+                            weight_kg2 = "{:.2f}".format(float(player_info2["weight_pounds"]) / 2.205)
+                            st.write("Weight: ", str(weight_kg2), "kg")
+                        else:
+                            st.write("Weight: ", str(player_info2["weight_pounds"]), "lbs")
+
+                        # Player's headline stats
+                        # getting player headline stats such as ppg, rpg, and apg through nba_api
+                        selected_player_headline_dict2 = commonplayerinfo.CommonPlayerInfo(
+                            player_id=player_searched_id2).player_headline_stats.get_dict()
+                        PPG2 = selected_player_headline_dict2["data"][0][3]
+                        RPG2 = selected_player_headline_dict2["data"][0][4]
+                        APG2 = selected_player_headline_dict2["data"][0][5]
+                        st.write("PPG: " + str(PPG2))
+                        st.write("RPG: " + str(RPG2))
+                        st.write("APG: " + str(APG2))
+
+                    with col2:
+                        # using nba_api to get right player id and then the player headshot image
+                        player_image2 = "https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{0}.png".format(
+                            player_searched_id2)
+                        st.image(player_image2, caption="Player headshot")
+
+                    compare_button = st.button('Bar Chart?')
+
+                    if compare_button:
+                        player1 = player_info["first_name"] + " " + player_info["last_name"]
+                        player2 = player_info2["first_name"] + " " + player_info2["last_name"]
+                        player1_stats = [PPG,RPG,APG]
+                        player2_stats = [PPG2,RPG2,APG2]
+                        compare_players = pd.DataFrame({
+                                "Point Categories": ['PPG', 'RPG', 'APG'],
+                                player1: player1_stats,
+                                player2: player2_stats
+                        })
+
+
+                        altair_chart_players = alt.Chart(compare_players)\
+                            .transform_fold([player1, player2], as_=["key", "value"])\
+                            .mark_bar()\
+                            .encode(
+                                    alt.X("key:N", axis=None),
+                                    alt.Y("value:Q"),
+                                    alt.Color("key:N", legend=alt.Legend(title=None, orient='bottom')),
+                                    alt.Column("Point Categories",
+                                               sort=['PPG', 'RPG' 'APG'],
+                                               header=alt.Header(labelOrient="top", title=None)
+                                    )
+                                )
+
+                        st.altair_chart(altair_chart_players)
 
 elif add_selectbox == 'Team Stats':
     team_url = "https://www.balldontlie.io/api/v1/teams"
     team_dict = requests.get(team_url).json()
-    # st.write(team_dict)
+    st.write(team_dict)
 
     # Store the list of team IDs
     team_ids = []
@@ -162,12 +253,6 @@ elif add_selectbox == 'Team Stats':
 
             season = st.number_input('Input a year', step=1, min_value=1979, max_value=2021, value=2021)
 
-            # df = pd.DataFrame(
-            #    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-            #    columns=['lat', 'lon'])
-
-            # st.map(df)
-
             if season:
                 st.subheader("Season {0} stats for {1}".format(season, team_selected))
 
@@ -198,12 +283,6 @@ elif add_selectbox == 'Team Stats':
                         elif new["data"][i]["visitor_team"]["id"] == team_id:
                             other_team_scores.append(new["data"][i]["home_team_score"])
 
-                    team_scores_table = pd.DataFrame(
-                        {
-                            team_selected + "'s Score:": team_scores,
-                            "Opposing Team's Scores": other_team_scores
-                        }
-                    )
 
                     team_scores_table_NO_OPPOSING = pd.DataFrame(
                         {
