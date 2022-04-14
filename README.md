@@ -21,7 +21,7 @@
   - [ ] Slider - https://docs.streamlit.io/library/api-reference/widgets/st.slider (Links to an external site.) 
   - [ ] Select-slider - https://docs.streamlit.io/library/api-reference/widgets/st.select_slider (Links to an external site.) 
   - [x] Text input - https://docs.streamlit.io/library/api-reference/widgets/st.text_input (Links to an external site.) 
-  - [ ] Number input - https://docs.streamlit.io/library/api-reference/widgets/st.number_input (Links to an external site.) 
+  - [x] Number input - https://docs.streamlit.io/library/api-reference/widgets/st.number_input (Links to an external site.) 
   - [ ] Text-area - https://docs.streamlit.io/library/api-reference/widgets/st.text_area (Links to an external site.) 
   - [ ] Date input - https://docs.streamlit.io/library/api-reference/widgets/st.date_input (Links to an external site.) 
   - [ ] Time input - https://docs.streamlit.io/library/api-reference/widgets/st.time_input (Links to an external site.) 
