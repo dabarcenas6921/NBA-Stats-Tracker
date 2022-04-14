@@ -200,7 +200,7 @@ if add_selectbox == 'Player Stats':
 elif add_selectbox == 'Team Stats':
     team_url = "https://www.balldontlie.io/api/v1/teams"
     team_dict = requests.get(team_url).json()
-    st.write(team_dict)
+    #st.write(team_dict)
 
     # Store the list of team IDs
     team_ids = []
@@ -284,6 +284,13 @@ elif add_selectbox == 'Team Stats':
                             other_team_scores.append(new["data"][i]["home_team_score"])
 
 
+                    team_scores_table = pd.DataFrame(
+                        {
+                            team_selected + "'s Score:": team_scores,
+                            "Opposing Team's Scores": other_team_scores
+                        }
+                    )
+
                     team_scores_table_NO_OPPOSING = pd.DataFrame(
                         {
                             team_selected + "'s Score:": team_scores
@@ -296,7 +303,7 @@ elif add_selectbox == 'Team Stats':
                         }
                     )
 
-                    st.dataframe(team_scores_table, height=500)
+                    #st.dataframe(team_scores_table, height=500)
 
                     option = st.radio("Please select what line chart information you would like to see:",
                                             [team_selected + "'s Scores", "Opposing Team's Scores",
