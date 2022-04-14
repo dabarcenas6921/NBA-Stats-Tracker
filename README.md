@@ -15,13 +15,13 @@
   - [x] Error box - https://docs.streamlit.io/library/api-reference/status/st.error (Links to an external site.) 
   - [ ] Exception message (optional) - https://docs.streamlit.io/library/api-reference/status/st.exception (Links to an external site.) 
 - [ ] 7. At least any 5 different widgets chosen from the following:
-  - [ ] Radio button - https://docs.streamlit.io/library/api-reference/widgets/st.radio (Links to an external site.) 
+  - [x] Radio button - https://docs.streamlit.io/library/api-reference/widgets/st.radio (Links to an external site.) 
   - [x] Selectbox - https://docs.streamlit.io/library/api-reference/widgets/st.selectbox (Links to an external site.) 
   - [ ] Multiselect - https://docs.streamlit.io/library/api-reference/widgets/st.multiselect (Links to an external site.) 
   - [ ] Slider - https://docs.streamlit.io/library/api-reference/widgets/st.slider (Links to an external site.) 
   - [ ] Select-slider - https://docs.streamlit.io/library/api-reference/widgets/st.select_slider (Links to an external site.) 
   - [x] Text input - https://docs.streamlit.io/library/api-reference/widgets/st.text_input (Links to an external site.) 
-  - [ ] Number input - https://docs.streamlit.io/library/api-reference/widgets/st.number_input (Links to an external site.) 
+  - [x] Number input - https://docs.streamlit.io/library/api-reference/widgets/st.number_input (Links to an external site.) 
   - [ ] Text-area - https://docs.streamlit.io/library/api-reference/widgets/st.text_area (Links to an external site.) 
   - [ ] Date input - https://docs.streamlit.io/library/api-reference/widgets/st.date_input (Links to an external site.) 
   - [ ] Time input - https://docs.streamlit.io/library/api-reference/widgets/st.time_input (Links to an external site.) 
@@ -29,4 +29,4 @@
   - [ ] Color - https://docs.streamlit.io/library/api-reference/widgets/st.color_picker (Links to an external site.) 
 ## BONUS
 - [ ] You may include a progress bar for certain components of your application; however, this is not mandatory
-- [ ] You may include media elements such as image, audio or video, which are not a requirement but can add to the overall harmony of the web application being developed
+- [x] You may include media elements such as image, audio or video, which are not a requirement but can add to the overall harmony of the web application being developed

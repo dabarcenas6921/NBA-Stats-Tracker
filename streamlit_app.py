@@ -23,7 +23,7 @@ st.sidebar.header("Options")
 
 add_selectbox = st.sidebar.selectbox(
     "Select a Project",
-    ['Player Stats', 'Team Stats', 'Season Stats', 'Stadium Locations']
+    ['Player Stats', 'Team Stats', 'Stadium Locations']
 )
 
 if add_selectbox == 'Player Stats':
@@ -235,7 +235,7 @@ elif add_selectbox == 'Team Stats':
 
             # Find the ID of the team the user selected
             if new["full_name"] == team_selected:
-                st.write("Team ID: ", new["id"])
+                st.write("Team ID: ", str(new["id"]))
                 st.write("Abbreviation: ", new["abbreviation"])
                 st.write("City: ", new["city"])
                 st.write("Conference: ", new["conference"])
@@ -249,7 +249,9 @@ elif add_selectbox == 'Team Stats':
         if team_id:
             st.header("Season Stats For " + team_selected)
 
-            season = st.text_input('Input a year')
+            # season = 2018
+
+            season = st.number_input('Input a year', step=1, min_value=1979, max_value=2021, value=2021)
 
             if season:
                 st.subheader("Season {0} stats for {1}".format(season, team_selected))
@@ -281,14 +283,31 @@ elif add_selectbox == 'Team Stats':
                         elif new["data"][i]["visitor_team"]["id"] == team_id:
                             other_team_scores.append(new["data"][i]["home_team_score"])
 
-                    team_scores_table = pd.DataFrame(
+
+                    team_scores_table_NO_OPPOSING = pd.DataFrame(
                         {
-                            team_selected + "'s Score:": team_scores,
+                            team_selected + "'s Score:": team_scores
+                        }
+                    )
+
+                    team_scores_table_ONLY_OPPOSING = pd.DataFrame(
+                        {
                             "Opposing Team's Scores": other_team_scores
                         }
                     )
+
                     st.dataframe(team_scores_table, height=500)
-                    st.line_chart(team_scores_table, height=500)
+
+                    option = st.radio("Please select what line chart information you would like to see:",
+                                            [team_selected + "'s Scores", "Opposing Team's Scores",
+                                             "Scores for both teams"])
+                    if option == "Opposing Team's Scores":
+                        st.line_chart(team_scores_table_ONLY_OPPOSING, height=500)
+                    elif option == "Scores for both teams":
+                        st.line_chart(team_scores_table, height=500)
+                    else:
+                        st.line_chart(team_scores_table_NO_OPPOSING, height=500)
+
 
 elif add_selectbox == 'Stadium Locations':
     st.subheader("NBA Stadium Locations")
