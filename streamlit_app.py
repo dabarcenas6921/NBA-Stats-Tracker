@@ -108,6 +108,8 @@ if add_selectbox == 'Player Stats':
                 # If player name not found
                 if not player_dict2["data"]:
                     st.error("Player does not exist!")
+                elif player_dict2["data"] == player_dict["data"]:
+                    st.error("Player cannot be compared to themselves!")
                 else:
                     st.success('Player found')
                     player_info2 = player_dict2["data"][0]
