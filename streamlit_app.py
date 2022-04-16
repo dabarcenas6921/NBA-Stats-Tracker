@@ -168,7 +168,7 @@ if add_selectbox == 'Player Stats':
                             player_searched_id2)
                         st.image(player_image2, caption="Player headshot")
 
-                    compare_button = st.button('Bar Chart?')
+                    compare_button = st.button('Compare with a bar chart?')
 
                     if compare_button:
                         player1 = player_info["first_name"] + " " + player_info["last_name"]
