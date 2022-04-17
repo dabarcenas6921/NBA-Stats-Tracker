@@ -5,6 +5,8 @@ import altair as alt
 import requests
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import commonplayerinfo
+from nba_api.stats.static import teams
+from nba_api.stats.endpoints import teaminfocommon
 
 st.set_page_config(
     page_title="NBA Tracker App",
@@ -17,7 +19,7 @@ st.title("NBA Stats Tracker 🏀")
 
 st.write("APIs used: [https://www.balldontlie.io]"
          "(https://www.balldontlie.io) and [https://"
-         "github.com/swar/nba_api](https://github.com/swar/nba_api)")
+         "github.com/swar/nba_api](https:st//github.com/swar/nba_api)")
 
 st.sidebar.header("Options")
 
@@ -28,8 +30,6 @@ add_selectbox = st.sidebar.selectbox(
 
 if add_selectbox == 'Player Stats':
     st.write("This section displays information about a player from all seasons.")
-
-    st.warning("Note: Not all players will have their height or weight provided.")
 
     player_searched = st.text_input('Search for players by their name. (Ex: LeBron James)')
 
@@ -47,7 +47,6 @@ if add_selectbox == 'Player Stats':
             player_searched_id = \
             players.find_players_by_full_name(player_info["first_name"] + " " + player_info["last_name"])[0]["id"]
             metric_con = st.checkbox("Convert to Metric System.")
-            # st.write(player_info)
 
             # creating columns to split the info:
             col1, col2 = st.columns(2)
@@ -101,103 +100,107 @@ if add_selectbox == 'Player Stats':
                     player_searched_id)
                 st.image(player_image, caption="Player headshot")
 
-            player_searched2 = st.text_input('If you want to compare, search for second player by their name.')
-            player_url_2 = "https://www.balldontlie.io/api/v1/players?search={0}".format(player_searched2)
-            player_dict2 = requests.get(player_url_2).json()
-            if player_searched2:
-                # If player name not found
-                if not player_dict2["data"]:
-                    st.error("Player does not exist!")
-                elif player_dict2["data"] == player_dict["data"]:
-                    st.error("Player cannot be compared to themselves!")
-                else:
-                    st.success('Player found')
-                    player_info2 = player_dict2["data"][0]
-                    player_searched_id2 = \
-                        players.find_players_by_full_name(
-                            player_info2["first_name"] + " " + player_info2["last_name"])[0]["id"]
+            compare_player_checkbox = st.checkbox("Click here to compare above player with other players")
 
-                    # creating columns to split the info:
-                    col1, col2 = st.columns(2)
+            if compare_player_checkbox:
 
-                    with col1:
-                        # Player's full name
-                        st.subheader(player_info2["first_name"] + " " + player_info2["last_name"])
+                player_searched2 = st.text_input('Search for second player by their name.')
+                player_url_2 = "https://www.balldontlie.io/api/v1/players?search={0}".format(player_searched2)
+                player_dict2 = requests.get(player_url_2).json()
+                if player_searched2:
+                    # If player name not found
+                    if not player_dict2["data"]:
+                        st.error("Player does not exist!")
+                    elif player_dict2["data"] == player_dict["data"]:
+                        st.error("Player cannot be compared to themselves!")
+                    else:
+                        st.success('Player found')
+                        player_info2 = player_dict2["data"][0]
+                        player_searched_id2 = \
+                            players.find_players_by_full_name(
+                                player_info2["first_name"] + " " + player_info2["last_name"])[0]["id"]
 
-                        # Player's position
-                        if player_info2["position"] == "":
-                            st.write("Position: Retired/Inactive")
-                        else:
-                            st.write('Position:', player_info["position"])
+                        # creating columns to split the info:
+                        col1, col2 = st.columns(2)
 
-                        # Player's height
-                        if player_info2["height_feet"] is None:
-                            st.write('Height: N/A')
-                        elif metric_con:
-                            height_inches2 = (player_info2["height_feet"] * 12) + player_info2["height_inches"]
-                            height_cm2 = float(height_inches2) * 2.54
-                            st.write("Height : ", str(height_cm2), "cm")
-                        else:
-                            st.write("Height : {0}' {1}''".format(player_info2["height_feet"],
-                                                                  player_info2["height_inches"]))
+                        with col1:
+                            # Player's full name
+                            st.subheader(player_info2["first_name"] + " " + player_info2["last_name"])
 
-                        # Player's team
-                        st.write('Team: ', player_info2["team"]["full_name"])
+                            # Player's position
+                            if player_info2["position"] == "":
+                                st.write("Position: Retired/Inactive")
+                            else:
+                                st.write('Position:', player_info["position"])
 
-                        # Player's weight
-                        if player_info2["weight_pounds"] is None:
-                            st.write('Weight: N/A')
-                        elif metric_con:
-                            weight_kg2 = "{:.2f}".format(float(player_info2["weight_pounds"]) / 2.205)
-                            st.write("Weight: ", str(weight_kg2), "kg")
-                        else:
-                            st.write("Weight: ", str(player_info2["weight_pounds"]), "lbs")
+                            # Player's height
+                            if player_info2["height_feet"] is None:
+                                st.write('Height: N/A')
+                            elif metric_con:
+                                height_inches2 = (player_info2["height_feet"] * 12) + player_info2["height_inches"]
+                                height_cm2 = float(height_inches2) * 2.54
+                                st.write("Height : ", str(height_cm2), "cm")
+                            else:
+                                st.write("Height : {0}' {1}''".format(player_info2["height_feet"],
+                                                                      player_info2["height_inches"]))
 
-                        # Player's headline stats
-                        # getting player headline stats such as ppg, rpg, and apg through nba_api
-                        selected_player_headline_dict2 = commonplayerinfo.CommonPlayerInfo(
-                            player_id=player_searched_id2).player_headline_stats.get_dict()
-                        PPG2 = selected_player_headline_dict2["data"][0][3]
-                        RPG2 = selected_player_headline_dict2["data"][0][4]
-                        APG2 = selected_player_headline_dict2["data"][0][5]
-                        st.write("PPG: " + str(PPG2))
-                        st.write("RPG: " + str(RPG2))
-                        st.write("APG: " + str(APG2))
+                            # Player's team
+                            st.write('Team: ', player_info2["team"]["full_name"])
 
-                    with col2:
-                        # using nba_api to get right player id and then the player headshot image
-                        player_image2 = "https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{0}.png".format(
-                            player_searched_id2)
-                        st.image(player_image2, caption="Player headshot")
+                            # Player's weight
+                            if player_info2["weight_pounds"] is None:
+                                st.write('Weight: N/A')
+                            elif metric_con:
+                                weight_kg2 = "{:.2f}".format(float(player_info2["weight_pounds"]) / 2.205)
+                                st.write("Weight: ", str(weight_kg2), "kg")
+                            else:
+                                st.write("Weight: ", str(player_info2["weight_pounds"]), "lbs")
 
-                    compare_button = st.button('Compare with a bar chart?')
+                            # Player's headline stats
+                            # getting player headline stats such as ppg, rpg, and apg through nba_api
+                            selected_player_headline_dict2 = commonplayerinfo.CommonPlayerInfo(
+                                player_id=player_searched_id2).player_headline_stats.get_dict()
+                            PPG2 = selected_player_headline_dict2["data"][0][3]
+                            RPG2 = selected_player_headline_dict2["data"][0][4]
+                            APG2 = selected_player_headline_dict2["data"][0][5]
+                            st.write("PPG: " + str(PPG2))
+                            st.write("RPG: " + str(RPG2))
+                            st.write("APG: " + str(APG2))
 
-                    if compare_button:
-                        player1 = player_info["first_name"] + " " + player_info["last_name"]
-                        player2 = player_info2["first_name"] + " " + player_info2["last_name"]
-                        player1_stats = [PPG,RPG,APG]
-                        player2_stats = [PPG2,RPG2,APG2]
-                        compare_players = pd.DataFrame({
-                                "Point Categories": ['PPG', 'RPG', 'APG'],
-                                player1: player1_stats,
-                                player2: player2_stats
-                        })
+                        with col2:
+                            # using nba_api to get right player id and then the player headshot image
+                            player_image2 = "https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{0}.png".format(
+                                player_searched_id2)
+                            st.image(player_image2, caption="Player headshot")
+
+                        compare_button = st.button('Show bar chart comparing player stats')
+
+                        if compare_button:
+                            player1 = player_info["first_name"] + " " + player_info["last_name"]
+                            player2 = player_info2["first_name"] + " " + player_info2["last_name"]
+                            player1_stats = [PPG,RPG,APG]
+                            player2_stats = [PPG2,RPG2,APG2]
+                            compare_players = pd.DataFrame({
+                                    "Point Categories": ['PPG', 'RPG', 'APG'],
+                                    player1: player1_stats,
+                                    player2: player2_stats
+                            })
 
 
-                        altair_chart_players = alt.Chart(compare_players)\
-                            .transform_fold([player1, player2], as_=["key", "value"])\
-                            .mark_bar()\
-                            .encode(
-                                    alt.X("key:N", axis=None),
-                                    alt.Y("value:Q"),
-                                    alt.Color("key:N", legend=alt.Legend(title=None, orient='bottom')),
-                                    alt.Column("Point Categories",
-                                               sort=['PPG', 'RPG' 'APG'],
-                                               header=alt.Header(labelOrient="top", title=None)
+                            altair_chart_players = alt.Chart(compare_players)\
+                                .transform_fold([player1, player2], as_=["key", "value"])\
+                                .mark_bar()\
+                                .encode(
+                                        alt.X("key:N", axis=None),
+                                        alt.Y("value:Q"),
+                                        alt.Color("key:N", legend=alt.Legend(title=None, orient='bottom')),
+                                        alt.Column("Point Categories",
+                                                   sort=['PPG', 'RPG' 'APG'],
+                                                   header=alt.Header(labelOrient="top", title=None)
+                                        )
                                     )
-                                )
 
-                        st.altair_chart(altair_chart_players)
+                            st.altair_chart(altair_chart_players)
 
 elif add_selectbox == 'Team Stats':
     team_url = "https://www.balldontlie.io/api/v1/teams"
@@ -225,27 +228,54 @@ elif add_selectbox == 'Team Stats':
     # Display the team names as a drop down menu
     team_selected = st.selectbox("Select a team", options=team_list)
 
+    team_ID_for_picture = teams.find_teams_by_full_name(team_selected)[0]["id"] #Official NBA TEAM ID. NOT FROM BALLDONTLIE.
+
+    team_picture_URL = "https://cdn.nba.com/logos/nba/{0}/primary/L/logo.svg".format(team_ID_for_picture)
+
+    nba_api_team_dict = teams.find_teams_by_full_name(team_selected)[0]
+
+    #Endpoint from NBA_API for getting more in-depth team stats
+    team_common_info = teaminfocommon.TeamInfoCommon(team_id=team_ID_for_picture)
+
+    team_common_info_dict = team_common_info.get_dict()
+
     # Team ID of selected team
     team_id = None
 
     # If user selected a team
     if team_selected:
-        # Iterate through the team IDs to find each team info
-        for i in team_ids:
-            ateam_dict = "https://www.balldontlie.io/api/v1/teams/{0}".format(i)
-            new = requests.get(ateam_dict).json()
 
-            # Find the ID of the team the user selected
-            if new["full_name"] == team_selected:
-                st.write("Team ID: ", str(new["id"]))
-                st.write("Abbreviation: ", new["abbreviation"])
-                st.write("City: ", new["city"])
-                st.write("Conference: ", new["conference"])
-                st.write("Division: ", new["division"])
-                st.write("Full Name: ", new["full_name"])
-                st.write("Name: ", new["name"])
-                team_id = new["id"]
-                break;
+        col3, col4 = st.columns(2)
+
+        with col3:
+            # Iterate through the team IDs to find each team info
+            for i in team_ids:
+                ateam_dict = "https://www.balldontlie.io/api/v1/teams/{0}".format(i)
+                new = requests.get(ateam_dict).json()
+
+                # Find the ID of the team the user selected
+                if new["full_name"] == team_selected:
+
+                    wins = str(team_common_info_dict["resultSets"][0]["rowSet"][0][9])
+                    losses = str(team_common_info_dict["resultSets"][0]["rowSet"][0][10])
+                    conf_rank = str(team_common_info_dict["resultSets"][0]["rowSet"][0][12])
+                    winning_pct = round((team_common_info_dict["resultSets"][0]["rowSet"][0][11]) * 100, 2)
+
+                    st.subheader("Full Name: "+ team_selected)
+                    st.write("Abbreviation: ", new["abbreviation"])
+                    st.write("City: ", new["city"])
+                    st.write("State: ", nba_api_team_dict["state"])
+                    st.write("Year founded: ", str(nba_api_team_dict["year_founded"]))
+                    st.write("Conference: ", new["conference"])
+                    st.write("Division: ", new["division"])
+                    st.write("Current NBA record: W - " + wins + " L -" + (losses))
+                    st.write("Current conference rank: ", conf_rank)
+                    st.write("Winning PCT: " + str(winning_pct) + "%")
+                    team_id = new["id"]
+                    break;
+
+        with col4:
+            st.image(team_picture_URL, caption="Team logo", width=250)
 
         # If the team ID of the selected team is found
         if team_id:
@@ -307,6 +337,8 @@ elif add_selectbox == 'Team Stats':
 
                     st.dataframe(team_scores_table, height=500)
 
+                    st.write("Boston celtics mean score: ", str(round(team_scores_table[team_selected + "'s Score:"].mean(), 2)))
+
                     option = st.radio("Please select what line chart information you would like to see:",
                                             [team_selected + "'s Scores", "Opposing Team's Scores",
                                              "Scores for both teams"])
@@ -317,67 +349,73 @@ elif add_selectbox == 'Team Stats':
                     else:
                         st.line_chart(team_scores_table_NO_OPPOSING, height=500)
 
-        st.title("Season Score Comparison")
-        yob = st.slider("Select a Season", 1979, 2021)
-        st.write("You selected {}".format(yob))
-        if yob:
-            st.subheader("Season {0} stats for {1}".format(yob, team_selected))
-        games = "https://www.balldontlie.io/api/v1/games?seasons[]={0}&team_ids[]={1}&per_page=100".format(
-            yob, team_id)
-        new = requests.get(games).json()
+            season_score_comparison = st.checkbox("Click here to compare above season stats with other seasons")
 
-        if not 'data' in new or len(new['data']) == 0:
-            st.info("N/A")
-        else:
-            # st.write(new["data"])
+            if season_score_comparison:
 
-            # All the searched team's scores
-            team_scores = []
+                st.title("Season Score Comparison")
+                yob = st.slider("Select a Season", 1979, 2021)
+                st.write("You selected {}".format(yob))
+                if yob:
+                         st.subheader("Season {0} stats for {1}".format(yob, team_selected))
+                games = "https://www.balldontlie.io/api/v1/games?seasons[]={0}&team_ids[]={1}&per_page=100".format(
+                                yob, team_id)
+                new = requests.get(games).json()
 
-            other_team_scores = []
+                if not 'data' in new or len(new['data']) == 0:
+                    st.info("N/A")
+                else:
+                                # st.write(new["data"])
 
-            # Get the scores for both teams
-            for i in range(len(new["data"])):
-                if new["data"][i]["home_team"]["id"] == team_id:
-                    team_scores.append(new["data"][i]["home_team_score"])
-                elif new["data"][i]["visitor_team"]["id"] == team_id:
-                    team_scores.append(new["data"][i]["visitor_team_score"])
+                                # All the searched team's scores
+                            team_scores = []
 
-            for i in range(len(new["data"])):
-                if new["data"][i]["home_team"]["id"] == team_id:
-                    other_team_scores.append(new["data"][i]["visitor_team_score"])
-                elif new["data"][i]["visitor_team"]["id"] == team_id:
-                    other_team_scores.append(new["data"][i]["home_team_score"])
+                            other_team_scores = []
 
-            slider_scores_table = pd.DataFrame(
-                {
-                    team_selected + "'s Score:": team_scores,
-                    "Opposing Team's Scores": other_team_scores
-                }
-            )
-            slider_scores_table_NO_OPPOSING = pd.DataFrame(
-                {
-                    team_selected + "'s Score:": team_scores
-                }
-            )
+                                # Get the scores for both teams
+                            for i in range(len(new["data"])):
+                                if new["data"][i]["home_team"]["id"] == team_id:
+                                    team_scores.append(new["data"][i]["home_team_score"])
+                                elif new["data"][i]["visitor_team"]["id"] == team_id:
+                                    team_scores.append(new["data"][i]["visitor_team_score"])
 
-            slider_scores_table_ONLY_OPPOSING = pd.DataFrame(
-                {
-                    "Opposing Team's Scores": other_team_scores
-                }
-            )
+                            for i in range(len(new["data"])):
+                                if new["data"][i]["home_team"]["id"] == team_id:
+                                    other_team_scores.append(new["data"][i]["visitor_team_score"])
+                                elif new["data"][i]["visitor_team"]["id"] == team_id:
+                                    other_team_scores.append(new["data"][i]["home_team_score"])
 
-            select = st.radio("Please select what information you would like to compare:",
-                              [team_selected + "'s Scores", "Opposing Team's Scores",
-                               "Scores for both teams"])
-            if select == "Opposing Team's Scores":
-                st.line_chart(slider_scores_table_ONLY_OPPOSING, height=500)
-            elif select == "Scores for both teams":
-                st.line_chart(slider_scores_table, height=500)
-            else:
-                st.line_chart(slider_scores_table_NO_OPPOSING, height=500)
+                            slider_scores_table = pd.DataFrame(
+                                {
+                                    team_selected + "'s Score:": team_scores,
+                                    "Opposing Team's Scores": other_team_scores
+                                }
+                            )
+                            slider_scores_table_NO_OPPOSING = pd.DataFrame(
+                                {
+                                    team_selected + "'s Score:": team_scores
+                                }
+                            )
 
-        # st.line_chart(slider_scores_table, height=500)
+                            slider_scores_table_ONLY_OPPOSING = pd.DataFrame(
+                                {
+                                    "Opposing Team's Scores": other_team_scores
+                                }
+                            )
+
+                            select = st.radio("Please select what information you would like to compare:",
+                                              [team_selected + "'s Scores", "Opposing Team's Scores",
+                                               "Scores for both teams"])
+
+                            st.write("Boston celtics mean score: ", str(round(slider_scores_table[team_selected + "'s Score:"].mean(), 2)))
+                            if select == "Opposing Team's Scores":
+                                st.line_chart(slider_scores_table_ONLY_OPPOSING, height=500)
+                            elif select == "Scores for both teams":
+                                st.line_chart(slider_scores_table, height=500)
+                            else:
+                                st.line_chart(slider_scores_table_NO_OPPOSING, height=500)
+
+                            #st.line_chart(slider_scores_table, height=500)
 
 
 
