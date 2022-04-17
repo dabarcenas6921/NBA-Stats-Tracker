@@ -1,4 +1,6 @@
-# NBA-Stats-Tracker
+# NBA Stats Tracker
+
+A powerful NBA stats tracking tool built using Streamlit, NBA_API, and balldontlie API.
 
 - [x] 1. At least 1 interactive table (https://docs.streamlit.io/library/api-reference/data/st.dataframe (Links to an external site.))
 - [x] 2. At least 2 chart elements,  such as line, area or bar charts (matplotlib is allowed). To display:
