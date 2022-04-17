@@ -305,7 +305,7 @@ elif add_selectbox == 'Team Stats':
                         }
                     )
 
-                    #st.dataframe(team_scores_table, height=500)
+                    st.dataframe(team_scores_table, height=500)
 
                     option = st.radio("Please select what line chart information you would like to see:",
                                             [team_selected + "'s Scores", "Opposing Team's Scores",
@@ -317,67 +317,67 @@ elif add_selectbox == 'Team Stats':
                     else:
                         st.line_chart(team_scores_table_NO_OPPOSING, height=500)
 
-            st.title("Season Score Comparison")
-            yob = st.slider("Select a Season", 1979, 2021)
-            st.write("You selected {}".format(yob))
-            if yob:
-                     st.subheader("Season {0} stats for {1}".format(yob, team_selected))
-            games = "https://www.balldontlie.io/api/v1/games?seasons[]={0}&team_ids[]={1}&per_page=100".format(
-                            yob, team_id)
-            new = requests.get(games).json()
+        st.title("Season Score Comparison")
+        yob = st.slider("Select a Season", 1979, 2021)
+        st.write("You selected {}".format(yob))
+        if yob:
+            st.subheader("Season {0} stats for {1}".format(yob, team_selected))
+        games = "https://www.balldontlie.io/api/v1/games?seasons[]={0}&team_ids[]={1}&per_page=100".format(
+            yob, team_id)
+        new = requests.get(games).json()
 
-            if not 'data' in new or len(new['data']) == 0:
-                st.info("N/A")
+        if not 'data' in new or len(new['data']) == 0:
+            st.info("N/A")
+        else:
+            # st.write(new["data"])
+
+            # All the searched team's scores
+            team_scores = []
+
+            other_team_scores = []
+
+            # Get the scores for both teams
+            for i in range(len(new["data"])):
+                if new["data"][i]["home_team"]["id"] == team_id:
+                    team_scores.append(new["data"][i]["home_team_score"])
+                elif new["data"][i]["visitor_team"]["id"] == team_id:
+                    team_scores.append(new["data"][i]["visitor_team_score"])
+
+            for i in range(len(new["data"])):
+                if new["data"][i]["home_team"]["id"] == team_id:
+                    other_team_scores.append(new["data"][i]["visitor_team_score"])
+                elif new["data"][i]["visitor_team"]["id"] == team_id:
+                    other_team_scores.append(new["data"][i]["home_team_score"])
+
+            slider_scores_table = pd.DataFrame(
+                {
+                    team_selected + "'s Score:": team_scores,
+                    "Opposing Team's Scores": other_team_scores
+                }
+            )
+            slider_scores_table_NO_OPPOSING = pd.DataFrame(
+                {
+                    team_selected + "'s Score:": team_scores
+                }
+            )
+
+            slider_scores_table_ONLY_OPPOSING = pd.DataFrame(
+                {
+                    "Opposing Team's Scores": other_team_scores
+                }
+            )
+
+            select = st.radio("Please select what information you would like to compare:",
+                              [team_selected + "'s Scores", "Opposing Team's Scores",
+                               "Scores for both teams"])
+            if select == "Opposing Team's Scores":
+                st.line_chart(slider_scores_table_ONLY_OPPOSING, height=500)
+            elif select == "Scores for both teams":
+                st.line_chart(slider_scores_table, height=500)
             else:
-                            # st.write(new["data"])
+                st.line_chart(slider_scores_table_NO_OPPOSING, height=500)
 
-                            # All the searched team's scores
-                        team_scores = []
-
-                        other_team_scores = []
-
-                            # Get the scores for both teams
-                        for i in range(len(new["data"])):
-                            if new["data"][i]["home_team"]["id"] == team_id:
-                                team_scores.append(new["data"][i]["home_team_score"])
-                            elif new["data"][i]["visitor_team"]["id"] == team_id:
-                                team_scores.append(new["data"][i]["visitor_team_score"])
-
-                        for i in range(len(new["data"])):
-                            if new["data"][i]["home_team"]["id"] == team_id:
-                                other_team_scores.append(new["data"][i]["visitor_team_score"])
-                            elif new["data"][i]["visitor_team"]["id"] == team_id:
-                                other_team_scores.append(new["data"][i]["home_team_score"])
-
-                        slider_scores_table = pd.DataFrame(
-                            {
-                                team_selected + "'s Score:": team_scores,
-                                "Opposing Team's Scores": other_team_scores
-                            }
-                        )
-                        slider_scores_table_NO_OPPOSING = pd.DataFrame(
-                            {
-                                team_selected + "'s Score:": team_scores
-                            }
-                        )
-
-                        slider_scores_table_ONLY_OPPOSING = pd.DataFrame(
-                            {
-                                "Opposing Team's Scores": other_team_scores
-                            }
-                        )
-
-                        select = st.radio("Please select what information you would like to compare:",
-                                          [team_selected + "'s Scores", "Opposing Team's Scores",
-                                           "Scores for both teams"])
-                        if select == "Opposing Team's Scores":
-                            st.line_chart(slider_scores_table_ONLY_OPPOSING, height=500)
-                        elif select == "Scores for both teams":
-                            st.line_chart(slider_scores_table, height=500)
-                        else:
-                            st.line_chart(slider_scores_table_NO_OPPOSING, height=500)
-
-                        #st.line_chart(slider_scores_table, height=500)
+        # st.line_chart(slider_scores_table, height=500)
 
 
 
