@@ -407,7 +407,7 @@ elif add_selectbox == 'Team Stats':
                                               [team_selected + "'s Scores", "Opposing Team's Scores",
                                                "Scores for both teams"])
 
-                            st.write("Boston celtics mean score: ", str(round(slider_scores_table[team_selected + "'s Score:"].mean(), 2)))
+                            st.write(team_selected + "'s mean score: " + str(round(slider_scores_table[team_selected + "'s Score:"].mean(), 2)))
                             if select == "Opposing Team's Scores":
                                 st.line_chart(slider_scores_table_ONLY_OPPOSING, height=500)
                             elif select == "Scores for both teams":
