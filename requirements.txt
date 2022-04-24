@@ -3,4 +3,4 @@ pandas
 numpy
 altair
 requests
-nba-api
+nba_api
