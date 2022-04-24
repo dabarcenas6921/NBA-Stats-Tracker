@@ -131,7 +131,7 @@ if add_selectbox == 'Player Stats':
                             if player_info2["position"] == "":
                                 st.write("Position: Retired/Inactive")
                             else:
-                                st.write('Position:', player_info["position"])
+                                st.write('Position:', player_info2["position"])
 
                             # Player's height
                             if player_info2["height_feet"] is None:
@@ -337,7 +337,7 @@ elif add_selectbox == 'Team Stats':
 
                     st.dataframe(team_scores_table, height=500)
 
-                    st.write("Boston celtics mean score: ", str(round(team_scores_table[team_selected + "'s Score:"].mean(), 2)))
+                    st.write(team_selected + "'s mean score: " + str(round(team_scores_table[team_selected + "'s Score:"].mean(), 2)))
 
                     option = st.radio("Please select what line chart information you would like to see:",
                                             [team_selected + "'s Scores", "Opposing Team's Scores",
