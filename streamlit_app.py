@@ -19,7 +19,7 @@ st.title("NBA Stats Tracker 🏀")
 
 st.write("APIs used: [https://www.balldontlie.io]"
          "(https://www.balldontlie.io) and [https://"
-         "github.com/swar/nba_api](https:st//github.com/swar/nba_api)")
+         "github.com/swar/nba_api](https://github.com/swar/nba_api)")
 
 st.sidebar.header("Options")
 
